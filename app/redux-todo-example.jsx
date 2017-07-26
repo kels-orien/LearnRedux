@@ -1,15 +1,18 @@
 var redux = require('redux');
 
-console.log('Starting redux example');
+console.log('Starting todo redux example');
 
-var reducer = (state = {name: 'Anonymous'}, action) => {
-  // state = state || {name: 'Anonymous'};
-
+var stateDefault = {
+  searchText: '',
+  showCompleted: false,
+  todos: []
+};
+var reducer = (state = stateDefault, action) => {
   switch (action.type) {
-    case 'CHANGE_NAME':
+    case 'CHANGE_SEARCH_TEXT':
       return {
         ...state,
-        name: action.name
+        searchText: action.searchText
       };
     default:
       return state;
@@ -20,23 +23,25 @@ var store = redux.createStore(reducer, redux.compose(
 ));
 
 // Subscribe to changes
-var unsubscribe = store.subscribe(() => {
+store.subscribe(() => {
   var state = store.getState();
 
-  console.log('Name is', state.name);
-  document.getElementById('app').innerHTML = state.name;
+  document.getElementById('app').innerHTML = state.searchText;
 });
-// unsubscribe();
 
-var currentState = store.getState();
-console.log('currentState', currentState);
+console.log('currentState', store.getState());
 
 store.dispatch({
-  type: 'CHANGE_NAME',
-  name: 'Andrew'
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'work'
 });
 
 store.dispatch({
-  type: 'CHANGE_NAME',
-  name: 'Emily'
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'dog'
+});
+
+store.dispatch({
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'Something else'
 });
